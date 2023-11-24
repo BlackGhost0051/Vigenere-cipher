@@ -39,7 +39,6 @@ void encrypt(const char* key, const char* inputFileName) {
 
         fputc(c, outputFile);
 
-        printf("%d\n",keyIndex);
     }
 
     fclose(inputFile);
