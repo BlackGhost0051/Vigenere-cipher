@@ -30,14 +30,15 @@ void encrypt(const char* key, const char* inputFileName) {
     while ((c = fgetc(inputFile)) != EOF) {
         if (c >= 'a' && c <= 'z') {
             c = 'a' + (c - 'a' + key[keyIndex] - 'a') % 26;
+            keyIndex = (keyIndex + 1) % keyLength;
         }
         else if (c >= 'A' && c <= 'Z') {
             c = 'A' + (c - 'A' + key[keyIndex] - 'a') % 26;
+            keyIndex = (keyIndex + 1) % keyLength;
         }
 
         fputc(c, outputFile);
 
-        keyIndex = (keyIndex + 1) % keyLength;
         printf("%d\n",keyIndex);
     }
 
@@ -60,17 +61,18 @@ void decrypt(const char* key, const char* inputFileName) {
     char c;
 
     while ((c = fgetc(inputFile)) != EOF) {
-        if (c >= 'a' && c <= 'z') {
-            c = 'a' + (c - 'a' - (key[keyIndex] - 'a') + 26) % 26;
-        }
-        else if (c >= 'A' && c <= 'Z') {
-            c = 'A' + (c - 'A' - (key[keyIndex] - 'a') + 26) % 26;
-        }
+      if (c >= 'a' && c <= 'z') {
+          c = 'a' + (c - 'a' - (key[keyIndex] - 'a') + 26) % 26;
+          keyIndex = (keyIndex + 1) % keyLength;
+      }
+      else if (c >= 'A' && c <= 'Z') {
+          c = 'A' + (c - 'A' - (key[keyIndex] - 'a') + 26) % 26;
+          keyIndex = (keyIndex + 1) % keyLength;
+      }
 
-        fputc(c, outputFile);
+    fputc(c, outputFile);
+}
 
-        keyIndex = (keyIndex + 1) % keyLength;
-    }
 
     fclose(inputFile);
     fclose(outputFile);
